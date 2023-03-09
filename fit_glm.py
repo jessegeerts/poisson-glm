@@ -6,7 +6,7 @@ import statsmodels.api as sm
 from statsmodels.genmod.families import Poisson
 from statsmodels.genmod.families.links import identity, log
 import matplotlib.pyplot as plt
-from simulate.simulate_spatial_cells import simulate_place_cell_spikes
+from simulate.simulate_spatial_cells import sim_place_cell_spikes
 
 
 # load some example data
@@ -63,8 +63,8 @@ plt.show()
 field_centre = np.array([0, -40])
 field_cov_mat = np.array([[50, 20], [20, 50]])
 
-sim_spikes = simulate_place_cell_spikes(field_centre, np.array([xPos, yPos]).T,
-                                        max_rate=30, variance=field_cov_mat, sampling_frequency=samp_freq)
+sim_spikes = sim_place_cell_spikes(field_centre, np.array([xPos, yPos]).T,
+                                   max_rate=30, variance=field_cov_mat, sampling_frequency=samp_freq)
 
 spike_xPos = xPos[sim_spikes > 0]
 spike_yPos = yPos[sim_spikes > 0]
