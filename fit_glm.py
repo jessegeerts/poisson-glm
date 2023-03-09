@@ -6,7 +6,7 @@ import statsmodels.api as sm
 from statsmodels.genmod.families import Poisson
 from statsmodels.genmod.families.links import identity, log
 import matplotlib.pyplot as plt
-from simulate.simulate_place_cell import simulate_place_cell_spikes
+from simulate.simulate_spatial_cells import simulate_place_cell_spikes
 
 
 # load some example data
