@@ -87,7 +87,7 @@ def sim_place_cell_spikes(position, mean=None, max_rate=15, variance=36, samplin
 
     c = PlaceCell(mean, variance, max_rate=max_rate)
     firing_rate = c.get_firing_rate(position)
-    return c.simulate_spikes(firing_rate, sampling_frequency)
+    return c.sim_poisson_spikes(firing_rate, sampling_frequency)
 
 
 def sim_hd_cell_spikes(head_dir, pref_dir=None, max_rate=15., concentration=4., sampling_frequency=500, return_object=False):
@@ -130,53 +130,3 @@ def sim_dir_placecell_spikes(pos, head_dir, pref_pos=None, pref_dir=None, pos_va
     firing_rate = c.get_firing_rate(pos, head_dir)
     return c.sim_poisson_spikes(firing_rate, sampling_frequency)
 
-
-
-
-if __name__ == '__main__':
-    from scipy.io import loadmat
-    from utils import get_dir_from_xy
-    import matplotlib.pyplot as plt
-
-
-    pref_dir = np.pi / 4  # preferred firing direction
-    precision = 4  # inverse of width of tuning
-    max_rate = 20
-
-    c = HeadDirectionCell(pref_dir=pref_dir, precision=precision, max_rate=max_rate)
-
-    n_sim_steps = 20000
-    samp_freq = 100
-
-    head_dir = np.linspace(0, np.pi*2, n_sim_steps)
-    spikes = c.simulate_spikes(head_dir, samp_freq)
-
-    n_bins = 20
-    bin_edges = np.linspace(0, np.pi*2, n_bins + 1)
-    bin_size_rad = 2 * np.pi / n_bins
-
-    spike_hist, _ = np.histogram(head_dir[spikes], bin_edges)
-
-    dir_occupancy, _ = np.histogram(head_dir, bin_edges)
-    dir_occupancy = dir_occupancy / samp_freq  # convert to seconds
-
-    ratemap = spike_hist / dir_occupancy
-    plt.plot(bin_edges[:-1], ratemap)
-    plt.show()
-
-    # do same thing with function
-
-    spikes, c2 = sim_hd_cell_spikes(head_dir, pref_dir=pref_dir, max_rate=max_rate, concentration=precision, sampling_frequency=samp_freq,
-                       return_object=True)
-
-    spike_hist, _ = np.histogram(head_dir[spikes], bin_edges)
-
-    dir_occupancy, _ = np.histogram(head_dir, bin_edges)
-    dir_occupancy = dir_occupancy / samp_freq  # convert to seconds
-
-    ratemap = spike_hist / dir_occupancy
-    plt.plot(bin_edges[:-1], ratemap)
-    plt.show()
-
-
-    pass
